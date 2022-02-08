@@ -4,6 +4,9 @@ out.jsonl
 .env
 .secrets/**
 tap_linear/config.py
-.pytest_cache
 .meltano/
-__pycache__/**
+.pytest_cache/
+tap_linear/__pycache__/
+tap_linear/queries/__pycache__/
+tap_linear/schemas/__pycache__/
+tap_linear/tests/__pycache__/
