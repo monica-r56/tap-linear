@@ -12,4 +12,8 @@ class IssuesStream(LinearStream):
     schema = issuesSchema
     primary_keys = ["id"]
     replication_key = "updatedAt"
+<<<<<<< HEAD
     query = issuesQuery
+=======
+    query = issuesQuery
+>>>>>>> a1b3ebce19e334cd85884ffe813daa0a0084fa80
