@@ -3,7 +3,6 @@
 from typing import List
 from singer_sdk import Tap, Stream
 from singer_sdk import typing as th
-from tap_linear.config import api_key, api_url
 from tap_linear.streams import (
     IssuesStream
 )
@@ -19,14 +18,13 @@ class TapLinear(Tap):
         th.Property(
             "auth_token",
             th.StringType,
-            default=api_key,
             required=True,
-            description="The token to authenticate against the API service"  
+            description="The token to authenticate against the API service"
         ),
         th.Property(
             "api_url",
             th.StringType,
-            default=api_url,
+            default="https://api.linear.app/graphql",
             description="The URL for the API service"
         ),
         th.Property(

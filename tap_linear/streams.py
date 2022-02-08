@@ -12,4 +12,3 @@ class IssuesStream(LinearStream):
     primary_keys = ["id"]
     replication_key = "updatedAt"
     query = issuesQuery
-
