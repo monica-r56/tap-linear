@@ -17,7 +17,6 @@ plugins:
           kind: password
       config:
         start_date: "2010-01-01T00:00:00Z"
-        auth_token: "<your-auth-token>"
   loaders:
     - name: target-jsonl
       variant: andyh1203

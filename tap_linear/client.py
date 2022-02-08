@@ -10,7 +10,6 @@ from singer_sdk.streams import GraphQLStream
 class LinearStream(GraphQLStream):
     """Linear stream class."""
 
-
     @property
     def authenticator(self) -> APIKeyAuthenticator:
         return APIKeyAuthenticator.create_for_stream(
@@ -28,11 +27,6 @@ class LinearStream(GraphQLStream):
         if "user_agent" in self.config:
             headers["User-Agent"] = self.config.get("user_agent")
         return headers
-    
-    @property
-    def next_page_token(self):
-        """Return the next page token."""
-        return 
     
     def get_next_page_token(self, response: requests.models.Response, previous_token: Optional[Any]) -> Any:
         """Return the next page token."""

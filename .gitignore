@@ -3,3 +3,7 @@ output/**
 out.jsonl
 .env
 .secrets/**
+tap_linear/config.py
+.pytest_cache
+.meltano/
+__pycache__/**
