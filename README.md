@@ -1,100 +1,84 @@
 # tap-linear
 
-`tap-linear` is a Singer tap for Linear.
-
-Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
+This is a [Singer](https://singer.io) tap that produces JSON-formatted data
+following the [Singer
+spec](https://github.com/singer-io/getting-started/blob/master/SPEC.md).
 
 ## Installation
 
-- [ ] `Developer TODO:` Update the below as needed to correctly describe the install procedure. For instance, if you do not have a PyPi repo, or if you want users to directly install from your git repo, you can modify this step as appropriate.
+See the getting-started guide:
 
-```bash
-pipx install tap-linear
-```
-
-## Configuration
-
-### Accepted Config Options
-
-- [ ] `Developer TODO:` Provide a list of config options accepted by the tap.
-
-A full list of supported settings and capabilities for this
-tap is available by running:
-
-```bash
-tap-linear --about
-```
-
-### Source Authentication and Authorization
-
-- [ ] `Developer TODO:` If your tap requires special access on the source system, or any special authentication requirements, provide those here.
+https://github.com/singer-io/getting-started
 
 ## Usage
 
-You can easily run `tap-linear` by itself or in a pipeline using [Meltano](https://meltano.com/).
+This section dives into basic usage of `tap-linear` by walking through extracting
+data from the api.
 
-### Executing the Tap Directly
+### Create the configuration file
 
-```bash
-tap-linear --version
-tap-linear --help
-tap-linear --config CONFIG --discover > ./catalog.json
+Create a config file containing the linear credentials, e.g.:
+
+```json
+{
+  "auth_token": "your-auth-token",
+  "start_date": "2017-01-01T00:00:00Z"
+}
 ```
 
-## Developer Resources
+### Discovery mode
 
-- [ ] `Developer TODO:` As a first step, scan the entire project for the text "`TODO:`" and complete any recommended steps, deleting the "TODO" references once completed.
-
-### Initialize your Development Environment
+The tap can be invoked in discovery mode to find the available linear entities.
 
 ```bash
-pipx install poetry
-poetry install
+$ tap-linear --config config.json --discover
+
 ```
 
-### Create and Run Tests
+A discovered catalog is output, with a JSON-schema description of each table. A
+source table directly corresponds to a Singer stream.
 
-Create tests within the `tap_linear/tests` subfolder and
-  then run:
+### Field selection
+
+In sync mode, `tap-linear` consumes the catalog and looks for streams that have been
+marked as _selected_ in their associated metadata entries.
+
+Redirect output from the tap's discovery mode to a file so that it can be
+modified:
 
 ```bash
-poetry run pytest
+$ tap-linear --config config.json --discover > catalog.json
 ```
 
-You can also test the `tap-linear` CLI interface directly using `poetry run`:
+Then edit `catalog.json` to make selections. The stream's metadata entry (associated
+with `"breadcrumb": []`) gets a top-level `selected` flag, as does its columns' metadata
+entries.
+
+```diff
+[
+  {
+    "breadcrumb": [],
+    "metadata": {
+      "valid-replication-keys": [
+        "updatedAt"
+      ],
+      "table-key-properties": [
+        "id"
+      ],
+      "forced-replication-method": "INCREMENTAL",
++      "selected": "true"
+    }
+  },
+]
+```
+
+### Sync mode
+
+With a `catalog.json` that describes field and table selections, the tap can be invoked in sync mode:
 
 ```bash
-poetry run tap-linear --help
+$ tap-linear --config config.json --catalog catalog.json
 ```
 
-### Testing with [Meltano](https://www.meltano.com)
-
-_**Note:** This tap will work in any Singer environment and does not require Meltano.
-Examples here are for convenience and to streamline end-to-end orchestration scenarios._
-
-Your project comes with a custom `meltano.yml` project file already created. Open the `meltano.yml` and follow any _"TODO"_ items listed in
-the file.
-
-Next, install Meltano (if you haven't already) and any needed plugins:
-
-```bash
-# Install meltano
-pipx install meltano
-# Initialize meltano within this directory
-cd tap-linear
-meltano install
-```
-
-Now you can test and orchestrate using Meltano:
-
-```bash
-# Test invocation:
-meltano invoke tap-linear --version
-# OR run a test `elt` pipeline:
-meltano elt tap-linear target-jsonl
-```
-
-### SDK Dev Guide
-
-See the [dev guide](https://sdk.meltano.com/en/latest/dev_guide.html) for more instructions on how to use the SDK to 
-develop your own taps and targets.
+Issues are written to standard output following the Singer specification. The
+resultant stream of JSON data can be consumed by a Singer target.

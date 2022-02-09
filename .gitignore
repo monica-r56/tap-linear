@@ -7,3 +7,4 @@ tap_linear/config.py
 .meltano/
 **/.pytest_cache/
 **/__pycache__/
+**/catalog.json
