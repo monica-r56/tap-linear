@@ -48,6 +48,7 @@ class LinearStream(GraphQLStream):
         value = (self.get_starting_timestamp(context) + timedelta(seconds=1)).strftime(
             "%Y-%m-%dT%H:%M:%SZ"
         )
+        self.logger.info(f"Previous state timestamp: {value}")
         body = {
             "query": self.query,
             "variables": {"next": next_page_token, "replicationKeyValue": value},
