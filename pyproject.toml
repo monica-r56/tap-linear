@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-linear"
-version = "0.0.1"
+version = "0.1.0"
 description = "`tap-linear` is a Singer tap for Linear, built with the Meltano SDK for Singer Taps."
 authors = ["Harisaran G"]
 keywords = [
