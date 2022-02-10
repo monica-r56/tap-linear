@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tap-linear"
-version = "0.1.0"
+version = "0.1.1"
 description = "`tap-linear` is a Singer tap for Linear, built with the Meltano SDK for Singer Taps."
 authors = ["Harisaran G"]
 keywords = [
@@ -29,7 +29,7 @@ isort = "^5.10.1"
 profile = "black"
 multi_line_output = 3 # Vertical Hanging Indent
 src_paths = "tap_linear"
-
+linear
 [build-system]
 # Uncomment the pinned version in favor of the git URL once
 # https://github.com/python-poetry/poetry-core/pull/257 is merged
