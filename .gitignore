@@ -8,3 +8,4 @@ tap_linear/config.py
 **/.pytest_cache/
 **/__pycache__/
 **/catalog.json
+**/dist
