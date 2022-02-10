@@ -1,3 +1,4 @@
+name: test
 on:
   push:
     branches:
@@ -19,7 +20,7 @@ jobs:
           pip install black
       - name: Lint
         run: |
-          black --check --diff "${GITHUB_WORKSPACE}/**/*.py"
+          black --check --diff tap_linear/
   test:
     runs-on: ubuntu-latest
     steps:
