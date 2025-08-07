@@ -1,0 +1,5 @@
+{
+  "auth_token": "YOUR_LINEAR_API_TOKEN_HERE",
+  "start_date": "2024-01-01T00:00:00Z",
+  "api_url": "https://api.linear.app/graphql"
+}

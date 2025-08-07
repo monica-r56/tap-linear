@@ -16,7 +16,7 @@ class LinearStream(GraphQLStream):
         return APIKeyAuthenticator.create_for_stream(
             self,
             key="Authorization",
-            value=self.config.get("auth_token"),
+            value=f"Bearer {self.config.get('auth_token')}",
             location="header",
         )
 
@@ -37,7 +37,6 @@ class LinearStream(GraphQLStream):
     ) -> Any:
         """Return the next page token."""
         resp_json = response.json()
-        self.logger.error(f"RESPONSE: {response.text}")
         if resp_json["data"]["issues"]["pageInfo"]["hasNextPage"]:
             return resp_json["data"]["issues"]["pageInfo"]["endCursor"]
         else:
@@ -50,16 +49,15 @@ class LinearStream(GraphQLStream):
         value = (self.get_starting_timestamp(context) + timedelta(seconds=1)).strftime(
             "%Y-%m-%dT%H:%M:%SZ"
         )
-        self.logger.info(f"GraphQL Payload: {json.dumps(body, indent=2)}")
         body = {
             "query": self.query,
             "variables": {"next": next_page_token, "replicationKeyValue": value},
         }
+        self.logger.info(f"GraphQL Payload: {json.dumps(body, indent=2)}")
         return body
 
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
         resp_json = response.json()
-        self.logger.error(f"RESPONSE: {response.text}")
         for row in resp_json["data"]["issues"]["nodes"]:
             yield row
