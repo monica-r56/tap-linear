@@ -37,6 +37,7 @@ class LinearStream(GraphQLStream):
     ) -> Any:
         """Return the next page token."""
         resp_json = response.json()
+        self.logger.error(f"RESPONSE: {response.text}")
         if resp_json["data"]["issues"]["pageInfo"]["hasNextPage"]:
             return resp_json["data"]["issues"]["pageInfo"]["endCursor"]
         else:
@@ -59,5 +60,6 @@ class LinearStream(GraphQLStream):
     def parse_response(self, response: requests.Response) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
         resp_json = response.json()
+        self.logger.error(f"RESPONSE: {response.text}")
         for row in resp_json["data"]["issues"]["nodes"]:
             yield row
