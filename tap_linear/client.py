@@ -2,6 +2,7 @@
 
 from datetime import timedelta
 import requests
+import json
 from typing import Any, Optional, Iterable
 from singer_sdk.authenticators import APIKeyAuthenticator
 from singer_sdk.streams import GraphQLStream
@@ -48,7 +49,7 @@ class LinearStream(GraphQLStream):
         value = (self.get_starting_timestamp(context) + timedelta(seconds=1)).strftime(
             "%Y-%m-%dT%H:%M:%SZ"
         )
-        self.logger.info(f"Previous state timestamp: {value}")
+        self.logger.info(f"GraphQL Payload: {json.dumps(body, indent=2)}")
         body = {
             "query": self.query,
             "variables": {"next": next_page_token, "replicationKeyValue": value},
